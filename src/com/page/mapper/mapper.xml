@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.page.mapper.PeopleManager">
+  <select id="selByPage" resultType="People" parameterType="map">
+      select * from (select ROWNUM r,e.* from people e where ROWNUM &lt; #{endPage} ) where r>#{startPage} and r &lt;#{endPage}
+  </select>
+
+    <select id="selCount" resultType="long" >
+        select count(*) from PEOPLE
+    </select>
+</mapper>

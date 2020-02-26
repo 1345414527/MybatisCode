@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjsxt.mapper.PeopleMapper">
+    <select id="selAll" resultType="com.bjsxt.pojo.People">
+        select * from PEOPLE
+    </select>
+
+    <select id="selById" resultType="com.bjsxt.pojo.People" parameterType="int">
+        select * from PEOPLE where id=#{0}
+    </select>
+
+    <select id="selByIdName" resultType="People" parameterType="map">
+        select * from PEOPLE where id=#{id} and name='#{name}'
+    </select>
+
+    <select id="page" resultType="People" parameterType="map">
+        select * from (select ROWNUM r,e.* from people e where ROWNUM &lt; #{pageEnd} ) where r>#{pageStart} and r &lt;#{pageEnd}
+    </select>
+
+    <select id="ins" parameterType="People">
+        insert into PEOPLE values(#{id},#{name},#{age})
+    </select>
+
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.student.mapper.StudetMapper">
+    <select id="selByPage" parameterType="PageInfo" resultType="student">
+          select * from ( select rownum r , s.* from student s where rownum &lt;  #{pageEnd} )
+        <where>
+               <if test="sname!=null and sname!=''">
+                   <bind name="sname" value="'%'+sname+'%'"></bind>
+                   name like #{sname}
+               </if>
+
+               <if test="tname!=null and tname!=''">
+               <bind name="tname" value="'%'+tname+'%'"></bind>
+                   and tid in(select id from teacher where name like #{tname})
+               </if>
+          </where>
+          and r &lt; #{pageEnd} and r > #{pageStart}
+    </select>
+
+
+    <select id="selCountByPageInfo" resultType="long" parameterType="PageInfo">
+        select count(*) from ( select rownum r , s.* from student s where rownum &lt;  #{pageEnd} )
+        <where>
+            <if test="sname!=null and sname!=''">
+                <bind name="sname" value="'%'+sname+'%'"></bind>
+                name like #{sname}
+            </if>
+
+            <if test="tname!=null and tname!=''">
+                <bind name="tname" value="'%'+tname+'%'"></bind>
+                and tid in(select id from teacher where name like #{tname})
+            </if>
+        </where>
+        and r &lt; #{pageEnd} and r > #{pageStart}
+    </select>
+</mapper>

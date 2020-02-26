@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.resultmap2.mapper.TeacherMap">
+   <resultMap id="mymap1" type="com.resultmap2.pojo.Teacher">
+       <id column="id" property="id"/>
+       <result column="name" property="name"/>
+       <collection property="list" ofType="com.resultmap2.pojo.Student" select="com.resultmap2.mapper.StudentMapper.selByTid" column="id"></collection>
+   </resultMap>
+
+
+    <select id="selAll" resultMap="mymap1" >
+        select  * from TEACHER
+    </select>
+
+    <resultMap id="mymap2" type="com.resultmap2.pojo.Teacher">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="list" ofType="com.resultmap2.pojo.Student">
+            <id column="sid" property="id"/>
+            <result column="sname" property="name"/>
+            <result column="age" property="age"/>
+            <result column="tid" property="tid"/>
+        </collection>
+    </resultMap>
+
+    <select id="selAll1" resultMap="mymap2">
+        select t.ID,t.NAME,s.ID sid,s.NAME sname,s.AGE,s.TID from TEACHER t left join STUDENT s on s.TID=t.ID
+    </select>
+</mapper>

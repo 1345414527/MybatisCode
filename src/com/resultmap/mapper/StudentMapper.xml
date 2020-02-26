@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.resultmap.mapper.StudentMapper">
+    <resultMap id="stuMap" type="Student">
+         <id column="id" property="id"/>
+         <result column="name" property="name"/>
+         <result column="age" property="age"/>
+         <result column="tid" property="tid"/>
+        <!--如果关联一个对象-->
+        <association property="teacher" select="com.resultmap.mapper.TeacherMap.selById" column="tid"></association>
+    </resultMap>
+
+    <select id="selAll" resultMap="stuMap">
+          select * from STUDENT
+    </select>
+
+</mapper>

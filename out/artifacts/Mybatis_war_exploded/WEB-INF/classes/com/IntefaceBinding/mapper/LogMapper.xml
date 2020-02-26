@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.IntefaceBinding.mapper.LogMapper">
+   <select id="selAll" resultType="Log" >
+       select * from LOG
+   </select>
+
+    <!--当多参数时，不需要写parameterType-->
+<!--    <select id="selByAccInAccount" resultType="Log" >-->
+<!--        select * from LOG where 1=1-->
+<!--        &lt;!&ndash;OGNL表达式,直接写&ndash;&gt;-->
+<!--        <if test="accin!=null and accin!=''">-->
+<!--            and ACCIN=#{accin}-->
+<!--        </if>-->
+<!--        <if test="acount!=null and accout!=''">-->
+<!--            and ACCOUT=#{accout}-->
+<!--        </if>-->
+
+<!--    </select>-->
+
+<!--    <select id="selByAccInAccount" resultType="Log" >-->
+<!--        select * from LOG-->
+<!--        &lt;!&ndash;OGNL表达式,直接写&ndash;&gt;-->
+<!--        <where>-->
+<!--        <if test="accin!=null and accin!=''">-->
+<!--            and ACCIN=#{accin}-->
+<!--        </if>-->
+<!--        <if test="accout!=null and accout!=''">-->
+<!--            and ACCOUT=#{accout}-->
+<!--        </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+    <select id="selByAccInAccount" resultType="Log" >
+        select * from LOG
+        <!--OGNL表达式,直接写-->
+        <where>
+            <choose>
+                <when test="accin!=null and accin!=''">
+                    accin=#{accin}
+                </when>
+                <when test="accout!=null and accout!=''">
+                    accout=#{accout}
+                </when>
+            </choose>
+        </where>
+    </select>
+
+<!--    <update id="upd" parameterType="log">-->
+<!--       update LOG-->
+<!--        <set>-->
+<!--            id=#{id},-->
+<!--            <if test="accin!=null and accin!=''">-->
+<!--                ACCIN=#{accin},-->
+<!--            </if>-->
+<!--            <if test="accout!=null and accout!=''">-->
+<!--                accout=#{accout}-->
+<!--            </if>-->
+
+<!--        </set>-->
+<!--        where  ID=#{id}-->
+<!--    </update>-->
+
+<!--    <select id="selByLog" resultType="Log">-->
+<!--        select * from LOG-->
+<!--        <trim prefix="where" prefixOverrides="and">  &lt;!&ndash;前面加个什么，前面去掉什么&ndash;&gt;-->
+<!--            and accin=#{accin}-->
+<!--        </trim>-->
+<!--    </select>-->
+
+    <update id="upd" >
+        update LOG
+        <trim prefix="set" suffixOverrides=",">
+            id=#{id},
+        </trim>
+            <where>
+                id=#{id}
+            </where>
+
+    </update>
+
+    <select id="selByLog" resultType="Log">
+    <bind name="accin" value="'%'+accin+'%'"/>
+      select  * from LOG
+
+    </select>
+
+    <select id="selIn" resultType="Log">
+        select * from LOG where id in
+        <foreach collection="list" item="abc" open="(" close=")" separator=",">
+            #{abc}
+        </foreach>
+    </select>
+
+    <insert id="ins" parameterType="list">
+         insert into LOG values
+        <trim suffixOverrides=",">
+         <foreach collection="list" item="log" separator=",">
+             (default,3,#{log},100)
+         </foreach>
+        </trim>
+    </insert>
+
+    <select id="">
+        select <include refid="mysql"></include> from LOG
+    </select>
+
+    <sql id="mysql">
+        id,accin,accout,money
+    </sql>
+
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bank.mapper.LogMapper">
+
+
+    <insert id="insLog" parameterType="Log">
+        insert into LOG values(3,#{accout},#{accin},#{money})
+    </insert>
+
+    <select id="selByPage" parameterType="map" resultType="Log">
+        select * from (select ROWNUM r,e.* from LOG e where ROWNUM &lt; #{endPage} ) where r>#{startPage} and r &lt;#{endPage}
+    </select>
+
+    <select id="selCount" resultType="long">
+        select count(*) from log;
+    </select>
+
+</mapper>
